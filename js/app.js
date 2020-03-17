@@ -1,19 +1,19 @@
-/*=========== get object Stuff from table =========== */
+/*=========== get Stuff from table =========== */
 
-function getObjectFromTable () {
-    let obj = [];
-    let objLength = [...document.querySelectorAll(`body table tbody tr`)].length - 2; 
+function getDataArrayFromTable () {
+    let result = [...new Array([...document.querySelectorAll(`body table tbody tr`)].length - 2)];
     let keys = [...document.querySelectorAll('table thead th')].map(el => el.innerHTML.replace(/\s+/g, '').toLowerCase()); 
-    for (i = 0; i < objLength; i++) {
-        obj[i] = {}
-        let row = [...document.querySelectorAll(`body table tbody tr:nth-child(${i+1}) td`)].map(el => el.innerHTML); 
-        for (let j = 0; j < keys.length; j++) {
-            obj[i][keys[j]] = row[j]
-        }
-    }
-    return obj;
+    let rows = [...new Array(result.length)]
+        .map((elem, i) => elem = [...document.querySelectorAll(`body table tbody tr:nth-child(${i+1}) td`)]
+        .map(el => el.innerHTML));
+    return result.map((elem, i) => {
+        elem = {};
+        keys.forEach((el,j) => elem[el] = rows[i][j])
+        return elem;
+    })
 }
-let stuff = getObjectFromTable()
+
+let stuff = getDataArrayFromTable()
 console.log(stuff)
 
 total.innerHTML = stuff.map((el) => el = +el.salary).reduce((acc, el) => acc + el);
